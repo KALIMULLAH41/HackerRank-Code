@@ -1,60 +1,62 @@
-//
-//Java's System.out.printf function can be used to print formatted output. The purpose of this exercise is to test your understanding of formatting output using printf.
-//
-//To get you started, a portion of the solution is provided for you in the editor; you must format and print the input to complete the solution.
-//
-//Input Format
-//
-//Every line of input will contain a String followed by an integer.
-//Each String will have a maximum of 10 alphabetic characters, and each integer will be in the inclusive range from 0  to 999 .
-//
-//Output Format
-//
-//In each line of output there should be two columns:
-//The first column contains the String and is left justified using exactly 15 characters.
-//The second column contains the integer, expressed in exactly 3 digits; if the original input has less than three digits, you must pad your output's leading digits with zeroes.
-//
-//
-//java 100
-//cpp 65
-//python 50
-//Sample Output
-//
-//================================
-//java           100 
-//cpp            065 
-//python         050 
-//================================
-//Explanation
-//
-//Each Strs left-justified with trailing whitespace through the first 15 characters. The leading digit of the integer is the 16th  character, and each integer that was less than  digits now has leading zeroes.
-//
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Hacker1;
 
-
-package HackerRankCode;
-
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 /**
  *
  * @author kalim
  */
 public class Solution2 {
+   
     
-
-
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter a String and  valuse");
-                
-        System.out.println("================================");
-        for (int i = 0; i < 3; i++) {
-            String s1 = sc.next();
-            int x = sc.nextInt();
-            // Complete this line
-            System.out.printf("%-15s%03d\n", s1, x);
+        DoNotTerminate.forbidExit();
+
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            int num = Integer.parseInt(br.readLine().trim());
+            Object o;// Must be used to hold the reference of the instance of the class Solution.Inner.Private
+
+            // Write your code here
+            o = new Inner().new Private();
+            System.out.println(num + " is " + ((Inner.Private)o).powerof2(num));
+            System.out.println("An instance of class: " + o.getClass().getCanonicalName() + " has been created");
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        System.out.println("================================");
+    }
+
+    static class Inner {
+        private class Private {
+            private String powerof2(int num) {
+                return ((num & num - 1) == 0) ? "power of 2" : "not a power of 2";
+            }
+        }
+    }
+
+    static class DoNotTerminate { // This class prevents exit(0)
+
+        public static class ExitTrappedException extends SecurityException {
+
+            private static final long serialVersionUID = 1L;
+        }
+
+        public static void forbidExit() {
+            final SecurityManager securityManager = new SecurityManager() {
+                @Override
+                public void checkPermission(java.security.Permission permission) {
+                    if (permission.getName().contains("exitVM")) {
+                        throw new ExitTrappedException();
+                    }
+                }
+            };
+            System.setSecurityManager(securityManager);
+        }
     }
 }
 
